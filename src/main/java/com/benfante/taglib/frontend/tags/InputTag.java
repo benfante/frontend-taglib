@@ -78,9 +78,9 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
     protected int writeTagContent(TagWriter tagWriter) throws JspException {
         tagWriter.startTag("div");
         if (this.getBindStatus().isError()) {
-            tagWriter.writeAttribute("class", "control-group error");
+            tagWriter.writeAttribute("class", "form-group has-danger");
         } else {
-            tagWriter.writeAttribute("class", "control-group");
+            tagWriter.writeAttribute("class", "form-group");
         }
         writeLabelTagContent(tagWriter);
         tagWriter.startTag("div");
@@ -127,7 +127,7 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
         String labelText = this.getRequestContext().getMessage(this.label, this.label);
         tagWriter.startTag("label");
         tagWriter.writeAttribute("for", autogenerateFor());
-        StringBuilder cssClass = new StringBuilder("control-label");
+        StringBuilder cssClass = new StringBuilder("form-control-label");
         if (StringUtils.hasText(this.labelCssClass)) {
             cssClass.append(' ').append(this.labelCssClass);
         }
