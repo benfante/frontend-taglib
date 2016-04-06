@@ -22,7 +22,7 @@
     <tlib-version>1.0</tlib-version>
     <jsp-version>1.2</jsp-version>
     <short-name>b</short-name>
-    <uri>http://it.cai.commons.web/bootstrap</uri>
+    <uri>http://com.benfante.taglib/frontend</uri>
     <description>Cai Bootstrap's JSP Tag Library</description>
 
     <tag>
