@@ -78,19 +78,21 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
     protected int writeTagContent(TagWriter tagWriter) throws JspException {
         tagWriter.startTag("div");
         if (this.getBindStatus().isError()) {
-            tagWriter.writeAttribute("class", "form-group has-danger");
+            tagWriter.writeAttribute("class", "form-group row has-danger");
         } else {
-            tagWriter.writeAttribute("class", "form-group");
+            tagWriter.writeAttribute("class", "form-group row");
         }
         writeLabelTagContent(tagWriter);
         tagWriter.startTag("div");
-        tagWriter.writeAttribute("class", "controls");
+        String controlsContainerClasses = extractControlContainerClasses();
+        tagWriter.writeAttribute("class", controlsContainerClasses);
         String cssClasses = BootstrapTagHelper.prependAppendCssClasses(prefix, suffix);
         if (StringUtils.hasText(cssClasses)) {
             tagWriter.startTag("div");
             tagWriter.writeAttribute("class", cssClasses);
             BootstrapTagHelper.writeInputTagDecorator(tagWriter, prefix);
         }
+        addCssToControl();
         super.writeTagContent(tagWriter);
         if (StringUtils.hasText(cssClasses)) {
             BootstrapTagHelper.writeInputTagDecorator(tagWriter, suffix);
@@ -153,5 +155,25 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
                     FormTag.MODEL_ATTRIBUTE_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
         }
         return StringUtils.deleteAny(path, "[]") + ".errors";
+    }
+
+    private String extractControlContainerClasses() {
+        StringBuilder result = new StringBuilder();
+        StringBuilder newCssClasses = new StringBuilder();
+        String[] cssClasses = this.getCssClass().split(" ");
+        for (String cssClass : cssClasses) {
+            if (cssClass.startsWith("col-")) {
+                result.append(' ').append(cssClass);
+            } else {
+                newCssClasses.append(' ').append(cssClass);
+            }
+            this.setCssClass(cssClass);
+        }
+        this.setCssClass(newCssClasses.toString());
+        return result.toString();
+    }
+
+    private void addCssToControl() {
+        this.setCssClass(this.getCssClass().concat(" form-control"));
     }
 }
