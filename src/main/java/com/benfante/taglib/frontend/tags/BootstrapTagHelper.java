@@ -22,6 +22,7 @@ import org.springframework.web.servlet.tags.form.TagWriter;
 /**
  *
  * @author michele franzin <michele at franzin.net>
+ * @author Lucio Benfante
  */
 public class BootstrapTagHelper {
 
@@ -33,7 +34,7 @@ public class BootstrapTagHelper {
     public static void writeInputTagDecorator(final TagWriter tagWriter, final String text) throws JspException {
         if (StringUtils.hasText(text)) {
             tagWriter.startTag("span");
-            tagWriter.writeAttribute("class", "add-on");
+            tagWriter.writeAttribute("class", "input-group-addon");
             tagWriter.appendValue(text);
             tagWriter.endTag();
             tagWriter.forceBlock();

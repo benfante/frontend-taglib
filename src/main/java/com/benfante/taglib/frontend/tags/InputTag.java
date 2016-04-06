@@ -86,15 +86,14 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
         tagWriter.startTag("div");
         String controlsContainerClasses = extractControlContainerClasses();
         tagWriter.writeAttribute("class", controlsContainerClasses);
-        String cssClasses = BootstrapTagHelper.prependAppendCssClasses(prefix, suffix);
-        if (StringUtils.hasText(cssClasses)) {
+        if (StringUtils.hasText(prefix)||StringUtils.hasText(suffix)) {
             tagWriter.startTag("div");
-            tagWriter.writeAttribute("class", cssClasses);
+            tagWriter.writeAttribute("class", "input-group");
             BootstrapTagHelper.writeInputTagDecorator(tagWriter, prefix);
         }
         addCssToControl();
         super.writeTagContent(tagWriter);
-        if (StringUtils.hasText(cssClasses)) {
+        if (StringUtils.hasText(prefix)||StringUtils.hasText(suffix)) {
             BootstrapTagHelper.writeInputTagDecorator(tagWriter, suffix);
             tagWriter.endTag();
         }
