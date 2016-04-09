@@ -1,17 +1,17 @@
 /**
- *    Copyright 2016 Lucio Benfante <lucio.benfante@gmail.com>
+ * Copyright 2016 Lucio Benfante <lucio.benfante@gmail.com>
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.benfante.taglib.frontend.tags;
 
@@ -78,43 +78,90 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
     protected int writeTagContent(TagWriter tagWriter) throws JspException {
         tagWriter.startTag("div");
         if (this.getBindStatus().isError()) {
-            tagWriter.writeAttribute("class", "form-group row has-danger");
+            tagWriter.writeAttribute("class", "form-group has-danger");
         } else {
-            tagWriter.writeAttribute("class", "form-group row");
+            tagWriter.writeAttribute("class", "form-group");
         }
+        tagWriter.startTag("div");
+        tagWriter.writeAttribute("class", "row");
+
         writeLabelTagContent(tagWriter);
         tagWriter.startTag("div");
         String controlsContainerClasses = extractControlContainerClasses();
         tagWriter.writeAttribute("class", controlsContainerClasses);
-        if (StringUtils.hasText(prefix)||StringUtils.hasText(suffix)) {
+        if (StringUtils.hasText(prefix) || StringUtils.hasText(suffix) || StringUtils.hasText(help)) {
             tagWriter.startTag("div");
             tagWriter.writeAttribute("class", "input-group");
-            BootstrapTagHelper.writeInputTagDecorator(tagWriter, prefix);
+        }
+        if (StringUtils.hasText(prefix)) {
+            tagWriter.startTag("span");
+            tagWriter.writeAttribute("class", "input-group-addon");
+            tagWriter.appendValue(prefix);
+            tagWriter.endTag();
+            tagWriter.forceBlock();
         }
         addCssToControl();
         super.writeTagContent(tagWriter);
-        if (StringUtils.hasText(prefix)||StringUtils.hasText(suffix)) {
-            BootstrapTagHelper.writeInputTagDecorator(tagWriter, suffix);
+        if (StringUtils.hasText(suffix)) {
+            tagWriter.startTag("span");
+            tagWriter.writeAttribute("class", "input-group-addon");
+            tagWriter.writeAttribute("style", "border-top-right-radius: .25rem; border-bottom-right-radius: .25rem; border-left: 0;");
+            tagWriter.appendValue(suffix);
+            tagWriter.endTag();
+            tagWriter.forceBlock();
+        }
+
+        // Help Tooltip
+        if (StringUtils.hasText(help)) {
+            tagWriter.startTag("span");
+            tagWriter.writeAttribute("class", "");
+            tagWriter.writeAttribute("style", "display: table-cell; padding: .375rem .75rem; font-size: 1rem; font-weight: normal; line-height: 1; color: #55595c; text-align: center; width: 1%; white-space: nowrap; vertical-align: middle;");
+            writeOptionalAttribute(tagWriter, "data-toggle", "tooltip");
+            writeOptionalAttribute(tagWriter, "title", this.getRequestContext().getMessage(this.getHelp(), this.getHelp()));
+            tagWriter.startTag("i");
+            tagWriter.writeAttribute("class", "fa fa-question-circle");
+            tagWriter.endTag(true);
             tagWriter.endTag();
         }
+
+        if (StringUtils.hasText(prefix) || StringUtils.hasText(suffix) || StringUtils.hasText(help)) {
+            tagWriter.endTag();
+        }
+
+        tagWriter.endTag();
+        tagWriter.endTag();
+
+        // Validation messages
         if (this.getBindStatus().isError()) {
-            tagWriter.startTag("span");
+            tagWriter.startTag("div");
+            tagWriter.writeAttribute("class", "row");
+
+            tagWriter.startTag("div");
+            writeOptionalAttribute(tagWriter, "class", labelCssClass);
+            tagWriter.endTag(true);
+
+            tagWriter.startTag("div");
             tagWriter.writeAttribute("id", autogenerateErrorId());
-            tagWriter.writeAttribute("class", "help-inline");
-            // writeDefaultAttributes(tagWriter);
-            String delimiter = "<br/>";
+            tagWriter.writeAttribute("class", "text-help" + " " + controlsContainerClasses);
             String[] errorMessages = getBindStatus().getErrorMessages();
-            for (int i = 0; i < errorMessages.length; i++) {
-                String errorMessage = errorMessages[i];
-                if (i > 0) {
-                    tagWriter.appendValue(delimiter);
+            if (errorMessages.length > 0) {
+                if (errorMessages.length > 1) {
+                    tagWriter.startTag("ul");
+                    for (int i = 0; i < errorMessages.length; i++) {
+                        String errorMessage = errorMessages[i];
+                        tagWriter.startTag("li");
+                        tagWriter.appendValue(getDisplayString(errorMessage));
+                        tagWriter.endTag();
+                    }
+                    tagWriter.endTag();
+                } else {
+                    tagWriter.appendValue(getDisplayString(errorMessages[0]));
                 }
-                tagWriter.appendValue(getDisplayString(errorMessage));
             }
             tagWriter.endTag();
+            tagWriter.endTag();
         }
-        BootstrapTagHelper.writeInputTagHelpBlock(tagWriter, help);
-        tagWriter.endTag();
+
         tagWriter.endTag();
         return SKIP_BODY;
     }
@@ -122,7 +169,6 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
     /**
      * Writes the opening '<code>label</code>' tag and forces a block tag so
      * that body content is written correctly.
-     * @return {@link javax.servlet.jsp.tagext.Tag#EVAL_BODY_INCLUDE}
      */
     protected void writeLabelTagContent(TagWriter tagWriter) throws JspException {
         String labelText = this.getRequestContext().getMessage(this.label, this.label);
@@ -140,7 +186,8 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
 
     /**
      * Autogenerate the '<code>for</code>' attribute value for this tag.
-     * <p>The default implementation delegates to {@link #getPropertyPath()},
+     * <p>
+     * The default implementation delegates to {@link #getPropertyPath()},
      * deleting invalid characters (such as "[" or "]").
      */
     protected String autogenerateFor() throws JspException {
@@ -175,4 +222,5 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
     private void addCssToControl() {
         this.setCssClass(this.getCssClass().concat(" form-control"));
     }
+
 }
