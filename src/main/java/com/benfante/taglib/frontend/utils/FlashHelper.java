@@ -33,8 +33,8 @@ import org.springframework.util.StringUtils;
  * @author Michele Franzin
  */
 public class FlashHelper {
-    public static String DEFAULT_NOTICE_TYPE = "notice";
-    public static String DEFAULT_ERROR_TYPE = "error";
+    public static String DEFAULT_NOTICE_TYPE = "success";
+    public static String DEFAULT_ERROR_TYPE = "danger";
     public static String DEFAULT_INFO_TYPE = "info";
     public static String DEFAULT_WARNING_TYPE = "warning";
     public static String DEFAULT_FLASH_ATTRIBUTE = "flash";
