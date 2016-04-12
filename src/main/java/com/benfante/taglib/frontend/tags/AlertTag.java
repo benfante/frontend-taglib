@@ -80,7 +80,9 @@ public class AlertTag extends  RequestContextAwareTag {
      */
     protected void writeMessage(String msg) throws IOException {
         pageContext.getOut().write("<div class=\"alert alert-" + type
-                + "\"><a class=\"close\" alt=\"chiudi\" data-dismiss=\"alert\" href=\"#\">&times;</a>"
+                + " alert-dismissible fade in\" role=\"alert\"><button type=\"button\" class=\"close\" aria-label=\"Close\" data-dismiss=\"alert\" >"
+                + "<span aria-hidden=\"true\">&times;</span>"
+                + "</button>"
                 + msg + "</div>");
     }
     
