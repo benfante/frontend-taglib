@@ -711,4 +711,42 @@
         <dynamic-attributes>true</dynamic-attributes>
     </tag>
 
+    <tag>
+        <description>Renders an HTML 'output' tag with a label.</description>
+        <name>output</name>
+        <tag-class>com.benfante.taglib.frontend.tags.LabelledOutputTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>Text or key (i18n) of the label.</description>
+            <name>label</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Additional classes for the label.</description>
+            <name>labelCssClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>HTML Standard Attribute</description>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Enable/disable HTML escaping of rendered values.</description>
+            <name>htmlEscape</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>Equivalent to "class" - HTML Optional Attribute</description>
+            <name>cssClass</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <dynamic-attributes>false</dynamic-attributes>
+    </tag>
+
 </taglib>
