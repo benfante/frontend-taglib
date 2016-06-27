@@ -113,11 +113,17 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
 
         // Help Tooltip
         if (StringUtils.hasText(help)) {
-            tagWriter.startTag("span");
+            String labelText = this.getRequestContext().getMessage(this.label, this.label);
+            tagWriter.startTag("a");
             tagWriter.writeAttribute("class", "");
+            tagWriter.writeAttribute("role", "button");
+            tagWriter.writeAttribute("tabindex", "0");
             tagWriter.writeAttribute("style", "display: table-cell; padding: .375rem .75rem; font-size: 1rem; font-weight: normal; line-height: 1; color: #55595c; text-align: center; width: 1%; white-space: nowrap; vertical-align: middle;");
-            writeOptionalAttribute(tagWriter, "data-toggle", "tooltip");
-            writeOptionalAttribute(tagWriter, "title", this.getRequestContext().getMessage(this.getHelp(), this.getHelp()));
+            writeOptionalAttribute(tagWriter, "data-toggle", "popover");
+            writeOptionalAttribute(tagWriter, "data-trigger", "focus");
+            writeOptionalAttribute(tagWriter, "data-html", "true");
+            writeOptionalAttribute(tagWriter, "title", labelText);
+            writeOptionalAttribute(tagWriter, "data-content", this.getRequestContext().getMessage(this.getHelp(), this.getHelp()));
             tagWriter.startTag("i");
             tagWriter.writeAttribute("class", "fa fa-question-circle");
             tagWriter.endTag(true);
