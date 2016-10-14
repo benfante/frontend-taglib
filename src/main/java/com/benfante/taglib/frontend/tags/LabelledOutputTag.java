@@ -16,6 +16,7 @@
 package com.benfante.taglib.frontend.tags;
 
 import javax.servlet.jsp.JspException;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.tags.form.AbstractFormTag;
 import org.springframework.web.servlet.tags.form.TagWriter;
 
@@ -68,7 +69,9 @@ public class LabelledOutputTag extends AbstractFormTag {
 
         writeLabelTagContent(tagWriter);
         tagWriter.startTag("output");
-        tagWriter.writeAttribute("class", this.getCssClass());
+        if (StringUtils.isNotBlank(this.getCssClass())) {
+            tagWriter.writeAttribute("class", this.getCssClass());
+        }
         tagWriter.forceBlock();
         this.tagWriter = tagWriter;
         return EVAL_BODY_INCLUDE;
@@ -88,7 +91,9 @@ public class LabelledOutputTag extends AbstractFormTag {
     protected void writeLabelTagContent(TagWriter tagWriter) throws JspException {
         String labelText = this.getRequestContext().getMessage(this.label, this.label);
         tagWriter.startTag("label");
-        tagWriter.writeAttribute("class", this.getLabelCssClass() + " font-weight-bold");
+        tagWriter.writeAttribute("class",
+                "font-weight-bold"
+                + (StringUtils.isNotBlank(this.getLabelCssClass()) ? this.getLabelCssClass() : ""));
         tagWriter.appendValue(labelText);
         tagWriter.endTag();
     }

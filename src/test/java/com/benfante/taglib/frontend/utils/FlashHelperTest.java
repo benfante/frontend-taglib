@@ -68,6 +68,7 @@ public class FlashHelperTest {
     }
 
     private void assertThatValueInRequestEqualToCode(HttpServletRequest req, String code, String type, String attribute) {
+        @SuppressWarnings("unchecked")
         Map<String, String> flashMap = (Map<String, String>) req.getAttribute(attribute);
         String value = flashMap.get(type);
         assertThat(value, equalTo(code));
@@ -107,6 +108,7 @@ public class FlashHelperTest {
     }
 
     private void assertThatValueInSessionEqualToCode(HttpServletRequest req, String code, String type, String attribute) {
+        @SuppressWarnings("unchecked")
         Map<String, String> flashMap = (Map<String, String>) req.getSession().getAttribute(attribute);
         String value = flashMap.get(type);
         assertThat(value, equalTo(code));

@@ -40,10 +40,10 @@ public class AlertTag extends  RequestContextAwareTag {
        this.type = type;
    } 
    
+   @Override
    protected final int doStartTagInternal() throws JspException, IOException {
         try {
-            Map<String, String> flash = (Map<String, String>) pageContext.getRequest().getAttribute("flash");
-            if (flash == null) flash = (Map<String, String>) pageContext.getSession().getAttribute("flash");
+            Map<String, String> flash = retrieveFlashMap();
             if (flash != null && flash.get(type) != null) {
                 // Resolve the message.
                 MessageSource messageSource = getMessageSource();
@@ -71,6 +71,17 @@ public class AlertTag extends  RequestContextAwareTag {
         catch (NoSuchMessageException ex) {
                 throw new JspTagException(getNoSuchMessageExceptionDescription(ex));
         }
+    }
+
+   /**
+    * Retrieve the flash map from its stored location (usually from the request or the session).
+    * @return The flash map.
+    */
+    @SuppressWarnings("unchecked")
+    private Map<String, String> retrieveFlashMap() {
+        Map<String, String> flash = (Map<String, String>) pageContext.getRequest().getAttribute("flash");
+        if (flash == null) flash = (Map<String, String>) pageContext.getSession().getAttribute("flash");
+        return flash;
     }
 
     /**

@@ -148,7 +148,7 @@ public class InputTag extends org.springframework.web.servlet.tags.form.InputTag
 
             tagWriter.startTag("div");
             tagWriter.writeAttribute("id", autogenerateErrorId());
-            tagWriter.writeAttribute("class", "text-help" + " " + controlsContainerClasses);
+            tagWriter.writeAttribute("class", "form-control-feedback" + " " + controlsContainerClasses);
             String[] errorMessages = getBindStatus().getErrorMessages();
             if (errorMessages.length > 0) {
                 if (errorMessages.length > 1) {

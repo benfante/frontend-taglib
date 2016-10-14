@@ -57,6 +57,7 @@ public class FlashHelper {
     }
     
     public static void doSet(HttpServletRequest req, String code, String type, String attribute) {
+        @SuppressWarnings("unchecked")
         Map<String, String> flash = (Map<String, String>)req.getAttribute(attribute);
         if (flash == null) flash = new HashMap<String, String>();
         if (type == null) {
@@ -86,6 +87,7 @@ public class FlashHelper {
     }
     
     public static void doSetRedirect(HttpServletRequest req, String code, String type, String attribute) {
+        @SuppressWarnings("unchecked")
         Map<String, String> flash = (Map<String, String>)req.getSession().getAttribute(attribute);
         if (flash == null) flash = new HashMap<String, String>();
         if (type == null) {
