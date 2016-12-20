@@ -92,7 +92,7 @@ public class LabelledOutputTag extends AbstractFormTag {
         String labelText = this.getRequestContext().getMessage(this.label, this.label);
         tagWriter.startTag("label");
         tagWriter.writeAttribute("class",
-                "font-weight-bold"
+                "font-weight-bold "
                 + (StringUtils.isNotBlank(this.getLabelCssClass()) ? this.getLabelCssClass() : ""));
         tagWriter.appendValue(labelText);
         tagWriter.endTag();

@@ -20,12 +20,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockPageContext;
 import org.springframework.mock.web.MockServletContext;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.CoreMatchers.*;
-import org.springframework.web.util.TagUtils;
 
 public class LabelledOutputTagTest {
 
@@ -51,7 +49,7 @@ public class LabelledOutputTagTest {
             tag.setLabel("Username");
             tag.doStartTag();
             String output = TagTestUtils.getOutput(mockPageContext);
-            final String expected = "<div class=\"row\"><label class=\"font-weight-bold\">Username</label><output>";
+            final String expected = "<div class=\"row\"><label class=\"font-weight-bold \">Username</label><output>";
             assertThat(output, equalTo(expected));
         } catch (JspException je) {
             Assert.fail(je.getLocalizedMessage());
